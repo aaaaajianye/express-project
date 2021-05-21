@@ -1,0 +1,29 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.mapper.WrecordMapper">
+
+<!--全部问题件-->
+<insert id="insertRecord" parameterType="com.aaa.entity.Wrecord">
+    insert into diaogangrecord(name,iphone,address,agobranch,nowbranch,shijian) values (#{name},#{iphone},#{address},#{agobranch},#{nowbranch},#{shijian})
+</insert>
+    <select id="selAll" parameterType="map" resultType="map">
+        select * from (select id,name,iphone,address,agobranch,nowbranch,shijian from diaogangrecord
+          where  nowbranch=#{braname} or agobranch=#{braname}
+
+
+
+          ) m LIMIT #{begin},#{end}
+    </select>
+    <select id="selectCount" parameterType="com.aaa.entity.Wrecord" resultType="int">
+        select count(*) from diaogangrecord
+    </select>
+    <!--调入的员工-->
+    <select id="selFold" parameterType="com.aaa.entity.Wrecord" resultType="com.aaa.entity.Wrecord">
+        select id,name,iphone,address,agobranch,nowbranch,shijian from diaogangrecord where nowbranch=#{branme}
+    </select>
+    <!--调出的员工-->
+    <select id="selCallout" parameterType="com.aaa.entity.Wrecord" resultType="com.aaa.entity.Wrecord">
+        select id,name,iphone,address,agobranch,nowbranch,shijian from diaogangrecord where agobranch=#{branme}
+    </select>
+</mapper>

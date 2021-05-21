@@ -1,0 +1,78 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.mapper.WexpressdetailsMapper">
+
+    <select id="expressdetailsList" resultType="map" parameterType="map" >
+        select * from (select
+        expid
+        ,expnum
+        ,custrank
+
+        ,sender
+        ,sendphone
+        ,sendidcard
+        ,sendprovince
+        ,sendcity
+        ,sendcounty
+        ,senddetailaddress
+        ,recipient
+        ,recphone
+        ,recprovince
+        ,reccity
+        ,reccounty
+        ,recdetailaddress
+        ,itemtype
+        ,itemweight
+        ,offerprice
+        ,offerprices
+        ,paytype
+        ,exptype
+        ,expremark
+        ,expprice
+        ,gogalprice
+        ,exptime
+        ,Expstate
+
+
+        from express
+        <where>1=1
+            <if test="expnum != null and expnum !=''">
+                and expnum=#{expnum}
+            </if>
+            <if test="recipient !=null and recipient !=''">
+                and recipient=#{recipient}
+            </if>
+            <if test="recphone !=null and recphone !=''">
+                and recphone=#{recphone}
+            </if>
+        </where>
+        ) m LIMIT #{begin},#{end}
+    </select>
+
+
+    <select id="selectCount" resultType="int" parameterType="map" >
+    SELECT count(expid) FROM express
+        <where>1=1
+        <if test="expnum != null and expnum !=''">
+            and expnum=#{expnum}
+        </if>
+        <if test="recipient !=null and recipient !=''">
+            and recipient=#{recipient}
+        </if>
+        <if test="recphone !=null and recphone !=''">
+            and recphone=#{recphone}
+        </if>
+    </where>
+
+
+    </select>
+
+    <select id="updateList" resultType="com.aaa.entity.Wexpressdetails" parameterType="com.aaa.entity.Wexpressdetails">
+      SELECT * FROM expressdetails WHERE expnum=#{expnum} order by expdid desc
+    </select>
+
+    <select id="selBrancher" resultType="com.aaa.entity.Wexpressdetails" parameterType="com.aaa.entity.Wexpressdetails">
+        select braname,braprincipal,braphone from branch where braname=#{braname}
+    </select>
+</mapper>

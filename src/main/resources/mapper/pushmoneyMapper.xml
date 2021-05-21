@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.mapper.pushmoneyMapper">
+    <select id="pushmoneyList" parameterType="com.aaa.entity.Pushmoney" resultType="com.aaa.entity.Pushmoney">
+        select * from pushmoney
+    </select>
+    <insert id="insertPushmoney" parameterType="com.aaa.entity.Pushmoney">
+        insert into pushmoney(brarank,enroll,addressee,addresser,dao,pai,qian) VALUES(#{brarank},#{enroll},#{addressee},#{addresser},#{dao},#{pai},#{qian})
+    </insert>
+    <select id="updateSelect" parameterType="com.aaa.entity.Pushmoney" resultType="com.aaa.entity.Pushmoney">
+        select * from pushmoney where pushid=#{pushid}
+    </select>
+    <update id="update" parameterType="com.aaa.entity.Pushmoney">
+        update pushmoney set brarank=#{brarank},enroll=#{enroll},addressee=#{addressee},addresser=#{addresser},dao=#{dao},pai=#{pai},qian=#{qian}  where pushid=#{pushid}
+    </update>
+    <delete id="del" parameterType="com.aaa.entity.Pushmoney">
+       delete from pushmoney where pushid=#{pushid}
+    </delete>
+</mapper>

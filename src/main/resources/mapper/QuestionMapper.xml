@@ -1,0 +1,154 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.mapper.QuestionMapper">
+
+<!--全部问题件-->
+<select id="findQuestion"  parameterType="map" resultType="map">
+    select
+    expid
+    ,expnum
+    ,custrank
+    ,b.braname braname
+    ,sender
+    ,sendphone
+    ,sendidcard
+    ,sendprovince
+    ,sendcity
+    ,sendcounty
+    ,senddetailaddress
+    ,recipient
+    ,recphone
+    ,recprovince
+    ,reccity
+    ,reccounty
+    ,recdetailaddress
+    ,itemtype
+    ,itemweight
+    ,offerprice
+    ,offerprices
+    ,paytype
+    ,exptype
+    ,expremark
+    ,expprice
+    ,gogalprice
+    ,exptime
+    ,Expstate
+    ,t.true_name truename
+    ,protype
+    ,wentibranch
+
+    from express e,t_user t,branch b
+    <where>  e.id=t.id and  e.braid=b.braid and Expstate=4
+        <if test="expnum != null">
+            and expnum=#{expnum}
+        </if>
+    </where>
+    LIMIT #{begin},#{end}
+</select>
+<!--总条数-->
+    <select id="selQuestion" parameterType="map" resultType="int">
+
+        select count(expid)
+        from express
+        where   Expstate=4
+
+
+
+
+    </select>
+    <!--运单详情-->
+    <select id="selQuestiin" parameterType="com.aaa.entity.Wquestion" resultType="com.aaa.entity.Wquestion">
+        select
+          expid
+          ,expnum
+          ,custrank
+          ,b.braname braname
+          ,sender
+          ,sendphone
+          ,sendidcard
+          ,sendprovince
+          ,sendcity
+          ,sendcounty
+          ,senddetailaddress
+          ,recipient
+          ,recphone
+          ,recprovince
+          ,reccity
+          ,reccounty
+          ,recdetailaddress
+          ,itemtype
+          ,itemweight
+          ,offerprice
+          ,offerprices
+          ,paytype
+          ,exptype
+          ,expremark
+          ,expprice
+          ,gogalprice
+          ,exptime
+          ,Expstate
+          ,t.true_name truename
+          ,protype
+          ,wentibranch
+
+          from express e,t_user t,branch b where e.braid=b.braid and e.id=t.id and expid=#{expid}
+    </select>
+    <!--修改运单状态-->
+    <update id="updateQuestion" parameterType="com.aaa.entity.Wquestion">
+        update express set Expstate=11,managetime=#{managetime} where expid=#{expid}
+    </update>
+    <!--查询已处理的问题单-->
+    <select id="questionManage" resultType="map" parameterType="map">
+        select
+        expid
+        ,expnum
+        ,custrank
+        ,b.braname braname
+        ,sender
+        ,sendphone
+        ,sendidcard
+        ,sendprovince
+        ,sendcity
+        ,sendcounty
+        ,senddetailaddress
+        ,recipient
+        ,recphone
+        ,recprovince
+        ,reccity
+        ,reccounty
+        ,recdetailaddress
+        ,itemtype
+        ,itemweight
+        ,offerprice
+        ,offerprices
+        ,paytype
+        ,exptype
+        ,expremark
+        ,expprice
+        ,gogalprice
+        ,exptime
+        ,Expstate
+        ,t.true_name truename
+        ,protype
+        ,wentibranch
+
+        from express e,t_user t,branch b
+        <where>  e.id=t.id and  e.braid=b.braid and Expstate=11
+            <if test="expnum != null">
+                and expnum=#{expnum}
+            </if>
+        </where>
+        LIMIT #{begin},#{end}
+    </select>
+    <!--已处理的问题单总条数-->
+    <select id="selManage" parameterType="com.aaa.entity.Wquestion" resultType="int">
+         select count(expid)
+        from express
+        where   Expstate=11
+    </select>
+    <!--问题网点的罚款-->
+    <update id="updateMoney" parameterType="com.aaa.entity.Wquestion">
+        update branchexpend set brawentijian=brawentijian+#{offerprice} where braexname=#{braexname}
+    </update>
+</mapper>

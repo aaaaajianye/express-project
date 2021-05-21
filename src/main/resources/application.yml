@@ -1,0 +1,56 @@
+
+mapper:
+  identity: MYSQL
+  mappers: com.aaa.util.MyMapper
+  not-empty: false
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.aaa.entity
+pagehelper:
+  helperDialect: mysql
+  params: count=countSql
+  reasonable: true
+  supportMethodsArguments: true
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat,wall,log4j
+    initialSize: 5
+    maxActive: 20
+    maxPoolPreparedStatementPerConnectionSize: 20
+    maxWait: 60000
+    minEvictableIdleTimeMillis: 300000
+    minIdle: 5
+    password: 123456
+    poolPreparedStatements: true
+    testOnBorrow: false
+    testOnReturn: false
+    testWhileIdle: true
+    timeBetweenEvictionRunsMillis: 60000
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/expressproject1?useUnicode=true&characterEncoding=utf-8
+    username: root
+    validationQuery: SELECT 1 FROM DUAL
+  freemarker:
+    allow-request-override: false
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: false
+    expose-session-attributes: false
+    expose-spring-macro-helpers: false
+    prefix: ''
+    request-context-attribute: request
+    settings:
+      auto_import: common/common.ftl as com
+      classic_compatible: true
+      datetime_format: yyyy-MM-dd
+      template_update_delay: 0
+    suffix: .ftl
+    template-loader-path: classpath:/templates/,classpath:/static/**
+  mvc:
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/

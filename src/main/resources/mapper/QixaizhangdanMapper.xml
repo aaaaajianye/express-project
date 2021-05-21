@@ -1,0 +1,11 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.mapper.QixiazhangdanMapper">
+    <select id="qixiamoney" resultType="com.aaa.entity.Branchexpend">
+        select SUM(braexludan) braexludan,SUM(braexaddress) braexaddress,SUM(braexaddresser) braexaddresser,SUM(bradaojian) bradaojian,SUM(braexdelivery) braexdelivery,SUM(brawentijian) brawentijian,SUM(braexsign) braexsign,SUM(complaintsmoney) complaintsmoney from branchexpend
+    </select>
+    <select id="selectqizhang" parameterType="string" resultType="com.aaa.entity.Branchexpend">
+        select * from branchexpend where braexname=#{braexname}
+    </select>
+</mapper>

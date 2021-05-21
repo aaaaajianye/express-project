@@ -1,0 +1,79 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.mapper.WcomplaintsMapper">
+<!--所有记录-->
+    <select id="findAll" resultType="map" parameterType="map" >
+        select * from (select
+        comid,
+        combranch,
+        comtuser,
+        comexpnum,
+        comfinemoney,
+        comcontent,
+        comdate
+
+
+        from complaintestaff
+
+        ) m LIMIT #{begin},#{end}
+    </select>
+<!--总条数-->
+
+    <select id="selectCount" resultType="int" parameterType="map" >
+    SELECT count(comid) FROM complaintestaff
+    </select>
+<!--修改罚款金额和次数-->
+    <update id="updateCom" parameterType="com.aaa.entity.Wcomplaints" >
+        update branchexpend set complaintsnumber=complaintsnumber+1,complaintsmoney=complaintsmoney+#{comfinemoney} where braexname=#{combranch}
+    </update>
+    <!--添加到投诉表-->
+    <insert id="insertCom" parameterType="com.aaa.entity.Wcomplaints">
+        insert into complaintestaff (combranch,comtuser,comexpnum,comfinemoney,comcontent,comdate) VALUES(#{combranch},#{comtuser},#{comexpnum},#{comfinemoney},#{comcontent},#{comdate})
+    </insert>
+<!--根据运单和员工姓名判断-->
+    <select id="selSame" parameterType="com.aaa.entity.Wcomplaints" resultType="int">
+        select count(*) from expressdetails where expnum=#{comexpnum} and expoper=#{comtuser}
+    </select>
+    <select id="selBraname" resultType="String" parameterType="com.aaa.entity.WstaffdetailsVO">
+    select braname,brarank from branch where braid=(select braid from staffdetails where id=(select id from t_user where user_name=#{username}))
+</select>
+    <select id="selAdmin" resultType="String" parameterType="com.aaa.entity.WstaffdetailsVO">
+
+    select braname from branch where brasuoshu=#{heiger}
+
+    </select>
+<!--查询所有的记录-->
+    <select id="SelAll" resultType="map" parameterType="map" >
+         select * from (select
+        comid,
+        combranch,
+        comtuser,
+        comexpnum,
+        comfinemoney,
+        comcontent,
+        comdate
+
+
+        from complaintestaff
+        <where>1=1
+            <if test="comexpnum != null">
+                and comexpnum like concat('%',concat(#{comexpnum},'%'))
+            </if>
+            <if test="!combranch.equals(hname) ">
+                and combranch=#{combranch}
+            </if>
+        </where>
+        ) m LIMIT #{begin},#{end}
+    </select>
+    <!--总条数-->
+    <select id="selCount" resultType="int" parameterType="map" >
+    SELECT count(comid) FROM complaintestaff
+    <where>1=1
+
+        <if test="!combranch.equals(hname) ">
+            and combranch=#{combranch}
+        </if>
+    </where>
+    </select>
+</mapper>

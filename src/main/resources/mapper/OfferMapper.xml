@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.mapper.OfferMapper">
+    <select id="offerList" parameterType="map" resultType="map">
+   SELECT * FROM offer
+        <where> 1=1
+            <if test="offersend!=null and offersend!='' ">
+                and offersend like concat('%',concat(#{offersend},'%'))
+            </if>
+            <if test="offergoal!=null and offergoal!=''">
+                and offergoal like concat('%',concat(#{offergoal},'%'))
+            </if>
+        </where>
+    LIMIT #{begin},#{end}
+    </select >
+
+    <select id="selectCount"  parameterType="map" resultType="int">
+        SELECT COUNT(offerid) FROM offer
+        <where> 1=1
+            <if test="offersend!=null and offersend!='' ">
+                and offersend like concat('%',concat(#{offersend},'%'))
+            </if>
+            <if test="offergoal!=null and offergoal!=''">
+                and offergoal like concat('%',concat(#{offergoal},'%'))
+            </if>
+        </where>
+    </select>
+
+    <select id="updateSelect" parameterType="com.aaa.entity.Offer" resultType="com.aaa.entity.Offer">
+        SELECT * FROM offer WHERE offerid=#{offerid}
+    </select>
+    <update id="update" parameterType="com.aaa.entity.Offer">
+        update offer set offerprice=#{offerprice},offerprice2=#{offerprice2},offerday=#{offerday} where offerid=#{offerid}
+    </update>
+    <select id="insertSelete" parameterType="com.aaa.entity.Offer" resultType="Integer">
+        select count(*) from offer where offersend=#{offersend} and offergoal=#{offergoal} and transid=#{transid}
+    </select>
+    <insert id="insertOffer" parameterType="com.aaa.entity.Offer">
+        insert into offer(offersend,offergoal,offerprice,offerprice2,offertime,custrank,offerday,transid) VALUES (#{offersend},#{offergoal},#{offerprice},#{offerprice2},#{offertime},#{custrank},#{offerday},#{transid})
+    </insert>
+    <delete id="del" parameterType="com.aaa.entity.Offer">
+         delete from offer where offerid=#{offerid}
+    </delete>
+    <select id="selone" parameterType="com.aaa.entity.Offer" resultType="com.aaa.entity.Offer">
+        select count(*) from  offer where offersend=#{offersend} and offergoal=#{offergoal}
+    </select>
+</mapper>

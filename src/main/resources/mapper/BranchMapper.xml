@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.mapper.BranchMapper">
+    <select id="branchBDList" parameterType="map" resultType="map">
+        select * FROM branch
+        <where> 1=1
+            <if test="bracode!=null and bracode!=''">
+                and bracode = #{bracode}
+            </if>
+            and braprincipal is NULL or braprincipal=''
+        </where>
+        LIMIT #{begin},#{end}
+    </select>
+    <select id="selectBDCount"  parameterType="map" resultType="int">
+        select count(*) FROM branch
+        <where> 1=1
+            <if test="bracode!=null and bracode!=''">
+                and bracode = #{bracode}
+            </if>
+            and braprincipal is NULL or braprincipal=''
+        </where>
+    </select>
+    <select id="branchList" parameterType="map" resultType="map">
+   SELECT * FROM branch WHERE brarank>1 LIMIT #{begin},#{end}
+    </select >
+
+    <select id="selectCount"  parameterType="map" resultType="int">
+        SELECT COUNT(bracode) FROM branch WHERE brarank>1
+    </select>
+
+    <select id="branchListc" parameterType="map" resultType="map">
+   SELECT * FROM branch WHERE brasuoshu=#{braname} and brarank=(#{brarank}+1) LIMIT #{begin},#{end}
+    </select >
+
+    <select id="selectCountc"  parameterType="map" resultType="int">
+        SELECT COUNT(bracode) FROM branch WHERE brarank=(#{brarank}+1) AND brasuoshu=#{braname}
+    </select>
+
+    <insert id="insertBranch" parameterType="com.aaa.entity.Branch">
+        INSERT INTO branch(bracode,braname,branameEnglish,braprovince,bracity,bracounty,braaddress,brasuoshu,brarank,braprincipal,braphone,braremark,bratime)
+        VALUES (#{bracode},#{braname},#{branameEnglish},#{braprovince},#{bracity},#{bracounty},#{braaddress},#{brasuoshu},#{brarank}+1,#{braprincipal},#{braphone},#{braremark},#{bratime})
+    </insert>
+
+    <select id="updateList" parameterType="com.aaa.entity.Branch" resultType="com.aaa.entity.Branch">
+        SELECT * FROM branch WHERE bracode=#{bracode}
+    </select>
+   <update id="update" parameterType="com.aaa.entity.Branch">
+update branch set braname=#{braname},braaddress=#{braaddress},braprincipal=#{braprincipal},braphone=#{braphone},braremark=#{braremark} where bracode=#{bracode}
+   </update>
+    <delete id="del" parameterType="com.aaa.entity.Branch">
+        delete from branch where bracode=#{bracode}
+    </delete>
+
+    <select id="branchAll" resultType="com.aaa.entity.Branch">
+         SELECT braid,braname,brarank FROM branch
+    </select>
+    <select id="branchMy" parameterType="com.aaa.entity.Branch" resultType="com.aaa.entity.Branch">
+      SELECT braname,braid FROM branch where brarank>0
+UNION
+SELECT braname,braid FROM branch WHERE brarank=#{brarank} AND braname=#{braname}
+    </select>
+    <select id="branchUp" resultType="com.aaa.entity.Branch">
+         SELECT braname,brarank FROM branch
+    </select>
+    <select id="selbraname" parameterType="com.aaa.entity.Branch" resultType="com.aaa.entity.Branch">
+        SELECT braname,brarank from branch WHERE braid=#{braid}
+    </select>
+    <select id="selTuser" parameterType="com.aaa.entity.Branch" resultType="com.aaa.entity.TuserTwo">
+      SELECT true_name as truename FROM t_user WHERE id in(SELECT id FROM staffdetails WHERE braid=(SELECT braid FROM branch WHERE bracode=#{bracode}))
+    </select>
+    <select id="selPhone" parameterType="com.aaa.entity.TuserTwo" resultType="com.aaa.entity.Staffdetails">
+       SELECT staphone FROM staffdetails where id =(SELECT id FROM t_user WHERE true_name=#{truename} )
+    </select>
+    <update id="updateTuser" parameterType="com.aaa.entity.Branch" >
+        UPDATE branch SET braprincipal=#{braprincipal},braphone=#{braphone} WHERE bracode=#{bracode}
+    </update>
+
+    <select id="brapricipalList" parameterType="com.aaa.entity.Branch" resultType="com.aaa.entity.Branch">
+        SELECT braprincipal from branch WHERE bracode=#{bracode}
+    </select>
+    <select id="branameone" parameterType="com.aaa.entity.Branch" resultType="Integer">
+        SELECT count(*) from branch WHERE braname=#{braname}
+    </select>
+</mapper>

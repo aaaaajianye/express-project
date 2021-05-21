@@ -1,0 +1,33 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.mapper.WrelieveMapper">
+    <!--查询所有网点-->
+    <select id="findAll" resultType="com.aaa.entity.Wbranch">
+          select braid,bracode,braname,braprovince,bracity,bracounty,braaddress,brasuoshu,brarank,braprincipal,braphone,brapicture,braremark,bratime
+          from branch
+        <where>1=1
+            <if test="!braname.equals(hname) ">
+                and braname=#{braname}
+            </if>
+        </where>
+
+
+
+    </select>
+    <!--查询所有网点-->
+    <select id="findAllBra" resultType="com.aaa.entity.Wbranch">
+        select braid,bracode,braname,braprovince,bracity,bracounty,braaddress,brasuoshu,brarank,braprincipal,braphone,brapicture,braremark,bratime
+        from branch
+
+    </select>
+    <!--修改员工所属网点-->
+    <update id="updateBranch"  parameterType="com.aaa.entity.Wbranch">
+        update staffdetails set braid=#{braid} where staid=#{staid}
+    </update>
+    <!--查询网点负责人-->
+    <select id="selBrapin" resultType="String" parameterType="com.aaa.entity.Wbranch">
+    select braprincipal from branch where braname=#{braname}
+    </select>
+
+</mapper>
